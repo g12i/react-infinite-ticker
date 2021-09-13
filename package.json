@@ -1,0 +1,58 @@
+{
+  "name": "react-infinite-ticker",
+  "version": "1.0.0-rc.0",
+  "description": "React component that scrolls children infinitely",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/g12i/react-infinite-ticker"
+  },
+  "homepage": "https://g12i.github.io/react-infinite-ticker/",
+  "main": "./dist/react-infinite-ticker-2.umd.js",
+  "module": "./dist/react-infinite-ticker-2.es.js",
+  "types": "./dist/useScrollTo.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/react-infinite-ticker-2.es.js",
+      "require": "./dist/react-infinite-ticker-2.umd.js"
+    }
+  },
+  "scripts": {
+    "dev": "vite --config vite.demo.config.js",
+    "build:demo": "vite build --config vite.demo.config.js && gh-pages -d demo/dist",
+    "build": "vite build && tsc --emitDeclarationOnly"
+  },
+  "keywords": [
+    "react",
+    "infinite",
+    "news",
+    "ticker",
+    "marquee",
+    "news ticker"
+  ],
+  "author": "Wojciech Grzebieniowski <grzebieniowski@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^17.0.20",
+    "@types/react-dom": "^17.0.9",
+    "@typescript-eslint/eslint-plugin": "^4.31.0",
+    "@typescript-eslint/parser": "^4.31.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-react": "^7.25.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "faker": "^5.5.3",
+    "gh-pages": "^3.2.3",
+    "prettier": "^2.3.2",
+    "typescript": "^4.4.2",
+    "vite": "^2.5.6"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
+  }
+}
