@@ -45,7 +45,6 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-react": "^7.25.1",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "faker": "^5.5.3",
     "gh-pages": "^3.2.3",
     "prettier": "^2.3.2",
     "typescript": "^4.4.2",

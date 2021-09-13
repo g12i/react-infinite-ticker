@@ -1,19 +1,46 @@
-import faker from "faker";
-import React, { useState } from "react";
+import React from "react";
 import { render } from "react-dom";
 import { VerticalTicker, HorizontalTicker } from "../lib";
 import "./style.css";
 
-const getRandomInt = (min, max) => {
-  return Math.floor(Math.random() * (max - min)) + min;
-};
-
-const boxes = Array.from({ length: 6 }).map((_, i) => ({
-  id: i,
-  heading1: faker.address.cityName(),
-  heading2: faker.name.jobTitle(),
-  backgroundColor: `hsl(${getRandomInt(0, 360)}, 100%, 90.2%)`,
-}));
+const boxes = [
+  {
+    id: 0,
+    heading1: "Spring Hill",
+    heading2: "Direct Applications Coordinator",
+    backgroundColor: "hsl(119, 100%, 90.2%)",
+  },
+  {
+    id: 1,
+    heading1: "Euless",
+    heading2: "National Solutions Representative",
+    backgroundColor: "hsl(210, 100%, 90.2%)",
+  },
+  {
+    id: 2,
+    heading1: "Buena Park",
+    heading2: "Chief Operations Liaison",
+    backgroundColor: "hsl(273, 100%, 90.2%)",
+  },
+  {
+    id: 3,
+    heading1: "Euclid",
+    heading2: "Customer Mobility Facilitator",
+    backgroundColor: "hsl(168, 100%, 90.2%)",
+  },
+  {
+    id: 4,
+    heading1: "Madison",
+    heading2: "Dynamic Applications Manager",
+    backgroundColor: "hsl(161, 100%, 90.2%)",
+  },
+  {
+    id: 5,
+    heading1: "Sammamish",
+    heading2: "National Identity Manager",
+    backgroundColor: "hsl(172, 100%, 90.2%)",
+  },
+];
 
 function App() {
   return (
