@@ -11,7 +11,7 @@ export function useMeasure<T extends HTMLElement>(
   callback: ClientCallback
 ): React.RefCallback<T> {
   const clientCallback = useRef<ClientCallback>(callback);
-  const resizeObserver = useRef<ResizeObserver>(null);
+  const resizeObserver = useRef<ResizeObserver | null>(null);
 
   useEffect(() => {
     clientCallback.current = callback;
@@ -31,7 +31,7 @@ export function useMeasure<T extends HTMLElement>(
       resizeObserver.current = new ResizeObserver(handleResize);
       resizeObserver.current.observe(node);
     } else {
-      resizeObserver.current.disconnect();
+      resizeObserver.current?.disconnect();
       resizeObserver.current = null;
     }
   }, []);

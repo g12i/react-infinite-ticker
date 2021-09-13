@@ -2,8 +2,10 @@ import type { ReactElement } from "react";
 import React, { useLayoutEffect, useRef, useState } from "react";
 import { useMeasure } from "./useMeasure";
 
-const PHASE_1 = 0;
-const PHASE_2 = 1;
+enum Phase {
+  First,
+  Second,
+}
 
 export const VerticalTicker: React.FC<{ speed?: number }> = ({
   children,
@@ -16,7 +18,7 @@ export const VerticalTicker: React.FC<{ speed?: number }> = ({
   const contentHeight = useRef(0);
   const transform1 = useRef(0);
   const transform2 = useRef(0);
-  const phase = useRef(PHASE_1);
+  const phase = useRef(Phase.First);
 
   const measureContentHeight = useMeasure(({ height }) => {
     contentHeight.current = height;
@@ -35,18 +37,18 @@ export const VerticalTicker: React.FC<{ speed?: number }> = ({
 
     const loop = () => {
       if (
-        phase.current === PHASE_1 &&
+        phase.current === Phase.First &&
         Math.abs(transform1.current) >= contentHeight.current
       ) {
-        phase.current = PHASE_2;
+        phase.current = Phase.Second;
         swap1();
       }
 
       if (
-        phase.current === PHASE_2 &&
+        phase.current === Phase.Second &&
         Math.abs(transform2.current) >= contentHeight.current * 2
       ) {
-        phase.current = PHASE_1;
+        phase.current = Phase.First;
         swap2();
       }
 
