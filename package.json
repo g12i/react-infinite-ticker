@@ -12,13 +12,13 @@
     "url": "https://github.com/g12i/react-infinite-ticker"
   },
   "homepage": "https://g12i.github.io/react-infinite-ticker/",
-  "main": "./dist/react-infinite-ticker-2.umd.js",
-  "module": "./dist/react-infinite-ticker-2.es.js",
+  "main": "./dist/react-infinite-ticker.umd.js",
+  "module": "./dist/react-infinite-ticker.es.js",
   "types": "./dist/useScrollTo.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/react-infinite-ticker-2.es.js",
-      "require": "./dist/react-infinite-ticker-2.umd.js"
+      "import": "./dist/react-infinite-ticker.es.js",
+      "require": "./dist/react-infinite-ticker.umd.js"
     }
   },
   "scripts": {
