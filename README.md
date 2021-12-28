@@ -17,8 +17,6 @@ import React from "react";
 import { VerticalTicker, HorizontalTicker } from "react-infinite-ticker";
 
 function App() {
-  const [ref, scroll] = useScrollTo();
-
   return (
     <div>
       <VerticalTicker>
