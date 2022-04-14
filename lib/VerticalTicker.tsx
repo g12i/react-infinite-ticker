@@ -1,12 +1,25 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { animate } from "./animate";
+import { TickerProps } from "./TickerProps";
 
-export const VerticalTicker: React.FC<{ duration?: number }> = ({
+export const VerticalTicker: React.FC<TickerProps> = ({
   children,
-  duration = 10000,
+  duration,
+  easing,
+  delay,
 }) => {
   const track1 = useRef<HTMLDivElement>(null);
   const track2 = useRef<HTMLDivElement>(null);
+  const options = useMemo<KeyframeAnimationOptions>(
+    () => ({
+      duration,
+      easing,
+      delay,
+      iterations: 1,
+      fill: "forwards" as const,
+    }),
+    [duration, easing, delay]
+  );
 
   useEffect(() => {
     const trackHeight = track1.current?.getBoundingClientRect().height;
@@ -21,12 +34,6 @@ export const VerticalTicker: React.FC<{ duration?: number }> = ({
     const controller = new AbortController();
 
     async function toggle(): Promise<void> {
-      const options = {
-        duration,
-        iterations: 1,
-        fill: "forwards" as const,
-      };
-
       const zeroToMinusOne = [
         { transform: "translateY(0px)" },
         { transform: `translateY(${-1 * height}px)` },
@@ -66,7 +73,7 @@ export const VerticalTicker: React.FC<{ duration?: number }> = ({
     return () => {
       controller.abort();
     };
-  }, [duration]);
+  }, [options]);
 
   return (
     <div
