@@ -19,7 +19,7 @@ import { VerticalTicker, HorizontalTicker } from "react-infinite-ticker";
 function App() {
   return (
     <div>
-      <VerticalTicker>
+      <VerticalTicker duration={15000}>
         <div>Put anything you want</div>
         <img src="/images/as/well.png" />
         <h1>All good</h1>
@@ -36,7 +36,16 @@ function App() {
 
 ## Configuration
 
-### `duration` _(optional)_
+Both `VerticalTicker` and `HorizontalTicker` take following props.
 
-Both `VerticalTicker` and `HorizontalTicker` take `duration` props, which is a
-**number** of milliseconds it should take to scroll the whole children content.
+### `duration` **REQUIRED**
+
+The **number** of milliseconds it should take to complete one one full animation iteration.
+
+### `delay` _(optional)_
+
+The **number** of milliseconds it should wait before each iterations.
+
+### `easing` _(optional)_
+
+The rate of the animation's change over time. Accepts the pre-defined values "linear", "ease", "ease-in", "ease-out", and "ease-in-out", or a custom "cubic-bezier" value like "cubic-bezier(0.42, 0, 0.58, 1)". Defaults to "linear". [(source)](https://developer.mozilla.org/en-US/docs/Web/API/KeyframeEffect/KeyframeEffect#easing)
