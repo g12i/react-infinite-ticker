@@ -1,68 +1,72 @@
-import React, { useLayoutEffect, useRef, useState } from "react";
-import { useMeasure } from "./useMeasure";
+import React, { useEffect, useRef } from "react";
+import { animate } from "./animate";
 
-enum Phase {
-  First,
-  Second,
-}
-
-export const HorizontalTicker: React.FC<{ speed?: number }> = ({
+export const HorizontalTicker: React.FC<{ duration?: number }> = ({
   children,
-  speed = 1,
+  duration = 10000,
 }) => {
-  // This causes re-render
-  const [, setTick] = useState(0);
+  const track1 = useRef<HTMLDivElement>(null);
+  const track2 = useRef<HTMLDivElement>(null);
 
-  // This doesn't change
-  const contentWidth = useRef(0);
-  const transform1 = useRef(0);
-  const transform2 = useRef(0);
-  const phase = useRef(Phase.First);
+  useEffect(() => {
+    const trackWidth = track1.current?.getBoundingClientRect().width;
 
-  const measureContentWidth = useMeasure(({ width }) => {
-    contentWidth.current = width;
-  });
+    if (!trackWidth || !track1.current || !track2.current) {
+      return;
+    }
 
-  const swap1 = () => {
-    transform1.current = Math.abs(transform1.current);
-  };
+    const width = trackWidth;
+    const track1El = track1.current;
+    const track2El = track2.current;
+    const controller = new AbortController();
 
-  const swap2 = () => {
-    transform2.current = 0;
-  };
+    async function toggle(): Promise<void> {
+      const options = {
+        duration,
+        iterations: 1,
+        fill: "forwards" as const,
+      };
 
-  useLayoutEffect(() => {
-    let i: number;
+      const zeroToMinusOne = [
+        { transform: "translateX(0px)" },
+        { transform: `translateX(${-1 * width}px)` },
+      ];
 
-    const loop = () => {
-      if (
-        phase.current === Phase.First &&
-        Math.abs(transform1.current) >= contentWidth.current
-      ) {
-        phase.current = Phase.Second;
-        swap1();
-      }
+      const oneToZero = [
+        { transform: `translateX(${width}px)` },
+        { transform: `translateX(${0}px)` },
+      ];
 
-      if (
-        phase.current === Phase.Second &&
-        Math.abs(transform2.current) >= contentWidth.current * 2
-      ) {
-        phase.current = Phase.First;
-        swap2();
-      }
+      const minusOneToMinusTwo = [
+        { transform: `translateX(${-1 * width}px)` },
+        { transform: `translateX(${-2 * width}px)` },
+      ];
 
-      transform1.current = transform1.current - speed;
-      transform2.current = transform2.current - speed;
+      const promise1 = animate(
+        track1El,
+        zeroToMinusOne,
+        options,
+        controller.signal
+      ).then(() => animate(track1El, oneToZero, options, controller.signal));
 
-      setTick((old) => (old === 0 ? 1 : 0));
+      const promise2 = animate(
+        track2El,
+        zeroToMinusOne,
+        options,
+        controller.signal
+      ).then(() =>
+        animate(track2El, minusOneToMinusTwo, options, controller.signal)
+      );
 
-      i = requestAnimationFrame(loop);
+      return Promise.all([promise1, promise2]).then(() => toggle());
+    }
+
+    toggle();
+
+    return () => {
+      controller.abort();
     };
-
-    i = requestAnimationFrame(loop);
-
-    return () => cancelAnimationFrame(i);
-  }, [speed]);
+  }, [duration]);
 
   return (
     <div
@@ -71,24 +75,20 @@ export const HorizontalTicker: React.FC<{ speed?: number }> = ({
         display: "flex",
         flexWrap: "nowrap",
         width: "100%",
-        maxWidth: `${contentWidth.current}px`,
       }}
     >
       <div
-        ref={measureContentWidth}
+        ref={track1}
         style={{
           display: "flex",
-          willChange: "transform",
-          transform: `translate3d(${transform1.current}px,0,0)`,
         }}
       >
         {children}
       </div>
       <div
+        ref={track2}
         style={{
           display: "flex",
-          willChange: "transform",
-          transform: `translate3d(${transform2.current}px,0,0)`,
         }}
       >
         {children}

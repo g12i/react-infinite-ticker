@@ -48,7 +48,7 @@ function App() {
       <div className="row">
         <h1>Vertical</h1>
         <div style={{ height: "500px" }}>
-          <VerticalTicker>
+          <VerticalTicker duration={5000}>
             {boxes.map(({ id, backgroundColor, heading1, heading2 }) => (
               <div className="box-wrapper" key={id}>
                 <div className="box" style={{ backgroundColor }}>
@@ -62,7 +62,7 @@ function App() {
       </div>
       <div className="row">
         <h1>Horizontal</h1>
-        <HorizontalTicker>
+        <HorizontalTicker duration={22000}>
           {boxes.map(({ id, backgroundColor, heading1, heading2 }) => (
             <div className="box-wrapper box-wrapper--vertical" key={id}>
               <div className="box box--vertical" style={{ backgroundColor }}>

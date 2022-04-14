@@ -24,7 +24,7 @@ function App() {
         <img src="/images/as/well.png" />
         <h1>All good</h1>
       </VerticalTicker>
-      <HorizontalTicker speed={1.5}>
+      <HorizontalTicker duration={25000}>
         <div>Put anything you want</div>
         <img src="/images/as/well.png" />
         <h1>All good</h1>
@@ -36,7 +36,7 @@ function App() {
 
 ## Configuration
 
-### `speed` _(optional)_
+### `duration` _(optional)_
 
-Both `VerticalTicker` and `HorizontalTicker` take `speed` props, which is a
-**number** of pixels by which elements are scrolled on each animation frame.
+Both `VerticalTicker` and `HorizontalTicker` take `duration` props, which is a
+**number** of milliseconds it should take to scroll the whole children content.
