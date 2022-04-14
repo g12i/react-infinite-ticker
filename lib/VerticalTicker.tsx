@@ -1,95 +1,89 @@
-import type { ReactElement } from "react";
-import React, { useLayoutEffect, useRef, useState } from "react";
-import { useMeasure } from "./useMeasure";
+import React, { useEffect, useMemo, useRef } from "react";
+import { animate } from "./animate";
+import { TickerProps } from "./TickerProps";
 
-enum Phase {
-  First,
-  Second,
-}
-
-export const VerticalTicker: React.FC<{ speed?: number }> = ({
+export const VerticalTicker: React.FC<TickerProps> = ({
   children,
-  speed = 1,
+  duration,
+  easing,
+  delay,
 }) => {
-  // This causes re-render
-  const [, setTick] = useState(0);
+  const track1 = useRef<HTMLDivElement>(null);
+  const track2 = useRef<HTMLDivElement>(null);
+  const options = useMemo<KeyframeAnimationOptions>(
+    () => ({
+      duration,
+      easing,
+      delay,
+      iterations: 1,
+      fill: "forwards" as const,
+    }),
+    [duration, easing, delay]
+  );
 
-  // This doesn't change
-  const contentHeight = useRef(0);
-  const transform1 = useRef(0);
-  const transform2 = useRef(0);
-  const phase = useRef(Phase.First);
+  useEffect(() => {
+    const trackHeight = track1.current?.getBoundingClientRect().height;
 
-  const measureContentHeight = useMeasure(({ height }) => {
-    contentHeight.current = height;
-  });
+    if (!trackHeight || !track1.current || !track2.current) {
+      return;
+    }
 
-  const swap1 = () => {
-    transform1.current = Math.abs(transform1.current);
-  };
+    const height = trackHeight;
+    const track1El = track1.current;
+    const track2El = track2.current;
+    const controller = new AbortController();
 
-  const swap2 = () => {
-    transform2.current = 0;
-  };
+    async function toggle(): Promise<void> {
+      const zeroToMinusOne = [
+        { transform: "translateY(0px)" },
+        { transform: `translateY(${-1 * height}px)` },
+      ];
 
-  useLayoutEffect(() => {
-    let i: number;
+      const oneToZero = [
+        { transform: `translateY(${height}px)` },
+        { transform: `translateY(${0}px)` },
+      ];
 
-    const loop = () => {
-      if (
-        phase.current === Phase.First &&
-        Math.abs(transform1.current) >= contentHeight.current
-      ) {
-        phase.current = Phase.Second;
-        swap1();
-      }
+      const minusOneToMinusTwo = [
+        { transform: `translateY(${-1 * height}px)` },
+        { transform: `translateY(${-2 * height}px)` },
+      ];
 
-      if (
-        phase.current === Phase.Second &&
-        Math.abs(transform2.current) >= contentHeight.current * 2
-      ) {
-        phase.current = Phase.First;
-        swap2();
-      }
+      const promise1 = animate(
+        track1El,
+        zeroToMinusOne,
+        options,
+        controller.signal
+      ).then(() => animate(track1El, oneToZero, options, controller.signal));
 
-      transform1.current = transform1.current - speed;
-      transform2.current = transform2.current - speed;
+      const promise2 = animate(
+        track2El,
+        zeroToMinusOne,
+        options,
+        controller.signal
+      ).then(() =>
+        animate(track2El, minusOneToMinusTwo, options, controller.signal)
+      );
 
-      setTick((old) => (old === 0 ? 1 : 0));
+      return Promise.all([promise1, promise2]).then(() => toggle());
+    }
 
-      i = requestAnimationFrame(loop);
+    toggle();
+
+    return () => {
+      controller.abort();
     };
-
-    i = requestAnimationFrame(loop);
-
-    return () => cancelAnimationFrame(i);
-  }, [speed]);
+  }, [options]);
 
   return (
     <div
       style={{
         overflow: "hidden",
         height: "100%",
-        maxHeight: `${contentHeight.current}px`,
       }}
     >
-      <div
-        ref={measureContentHeight}
-        style={{
-          willChange: "transform",
-          transform: `translate3d(0,${transform1.current}px,0)`,
-        }}
-      >
-        {children}
-      </div>
-      <div
-        style={{
-          willChange: "transform",
-          transform: `translate3d(0,${transform2.current}px,0)`,
-        }}
-      >
-        {children}
-      </div>
+      <div ref={track1}>{children}</div>
+      <div ref={track2}>{children}</div>
     </div>
   );
 };

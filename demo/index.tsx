@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { render } from "react-dom";
 import { VerticalTicker, HorizontalTicker } from "../lib";
 import "./style.css";
@@ -43,12 +43,60 @@ const boxes = [
 ];
 
 function App() {
+  const [duration, setDuration] = useState(15000);
+  const [delay, setDelay] = useState(0);
+  const [easing, setEasing] = useState("linear");
+
   return (
     <div className="demo">
       <div className="row">
+        <div className="options">
+          <label>
+            Easing
+            <select
+              value={easing}
+              onChange={(event) => {
+                setEasing(event.target.value);
+              }}
+            >
+              <option value="linear">linear</option>
+              <option value="ease-in">ease-in</option>
+              <option value="ease-out">ease-out</option>
+              <option value="ease-in-out">ease-in-out</option>
+            </select>
+          </label>
+          <label>
+            Duration
+            <input
+              value={duration}
+              type="range"
+              min={1000}
+              max={25000}
+              step={1000}
+              onChange={(event) => {
+                setDuration(Number.parseInt(event.target.value));
+              }}
+            />
+            <output>{duration}ms</output>
+          </label>
+          <label>
+            Delay
+            <input
+              value={delay}
+              type="range"
+              min={0}
+              max={5000}
+              step={1000}
+              onChange={(event) => {
+                setDelay(Number.parseInt(event.target.value));
+              }}
+            />
+            <output>{delay}ms</output>
+          </label>
+        </div>
         <h1>Vertical</h1>
         <div style={{ height: "500px" }}>
-          <VerticalTicker>
+          <VerticalTicker duration={duration} easing={easing} delay={delay}>
             {boxes.map(({ id, backgroundColor, heading1, heading2 }) => (
               <div className="box-wrapper" key={id}>
                 <div className="box" style={{ backgroundColor }}>
@@ -62,7 +110,7 @@ function App() {
       </div>
       <div className="row">
         <h1>Horizontal</h1>
-        <HorizontalTicker>
+        <HorizontalTicker duration={duration} easing={easing} delay={delay}>
           {boxes.map(({ id, backgroundColor, heading1, heading2 }) => (
             <div className="box-wrapper box-wrapper--vertical" key={id}>
               <div className="box box--vertical" style={{ backgroundColor }}>

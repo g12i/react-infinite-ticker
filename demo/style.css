@@ -90,3 +90,15 @@ body {
   pointer-events: auto;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.options label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
