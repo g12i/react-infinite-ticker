@@ -56,8 +56,21 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.box--horizontal {
+  min-height: 300px;
+}
+
 .box--vertical {
-  min-width: 400px;
+  min-width: 250px;
+}
+
+@media (min-width: 960px) {
+  .box--horizontal {
+    min-height: auto;
+  }
+  .box--vertical {
+    min-width: 400px;
+  }
 }
 
 .box .heading-1 {
@@ -93,7 +106,7 @@ body {
 
 .options {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
 }
 

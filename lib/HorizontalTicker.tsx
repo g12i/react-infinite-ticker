@@ -1,12 +1,14 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { animate } from "./animate";
 import { TickerProps } from "./TickerProps";
+import { useElementSize } from "./useElementSize";
 
 export const HorizontalTicker: React.FC<TickerProps> = ({
   children,
   duration,
   easing,
   delay,
+  reverse = false,
 }) => {
   const track1 = useRef<HTMLDivElement>(null);
   const track2 = useRef<HTMLDivElement>(null);
@@ -16,14 +18,15 @@ export const HorizontalTicker: React.FC<TickerProps> = ({
       easing,
       delay,
       iterations: 1,
-      fill: "forwards" as const,
+      fill: "forwards",
+      direction: reverse ? "reverse" : "normal",
     }),
-    [duration, easing, delay]
+    [duration, easing, delay, reverse]
   );
 
-  useEffect(() => {
-    const trackWidth = track1.current?.getBoundingClientRect().width;
+  const { width: trackWidth } = useElementSize(track1);
 
+  useEffect(() => {
     if (!trackWidth || !track1.current || !track2.current) {
       return;
     }
@@ -73,7 +76,7 @@ export const HorizontalTicker: React.FC<TickerProps> = ({
     return () => {
       controller.abort();
     };
-  }, [options]);
+  }, [trackWidth, options]);
 
   return (
     <div

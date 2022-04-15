@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 import { VerticalTicker, HorizontalTicker } from "../lib";
 import "./style.css";
 
@@ -46,6 +46,7 @@ function App() {
   const [duration, setDuration] = useState(15000);
   const [delay, setDelay] = useState(0);
   const [easing, setEasing] = useState("linear");
+  const [reverse, setReverse] = useState(false);
 
   return (
     <div className="demo">
@@ -93,13 +94,35 @@ function App() {
             />
             <output>{delay}ms</output>
           </label>
+          <label>
+            Reverse?
+            <input
+              checked={reverse}
+              type="checkbox"
+              min={0}
+              max={5000}
+              step={1000}
+              onChange={(event) => {
+                setReverse(event.target.checked);
+              }}
+            />
+            <output>{delay}ms</output>
+          </label>
         </div>
         <h1>Vertical</h1>
         <div style={{ height: "500px" }}>
-          <VerticalTicker duration={duration} easing={easing} delay={delay}>
+          <VerticalTicker
+            duration={duration}
+            easing={easing}
+            delay={delay}
+            reverse={reverse}
+          >
             {boxes.map(({ id, backgroundColor, heading1, heading2 }) => (
               <div className="box-wrapper" key={id}>
-                <div className="box" style={{ backgroundColor }}>
+                <div
+                  className="box box--horizontal"
+                  style={{ backgroundColor }}
+                >
                   <p className="heading-1">{heading1}</p>
                   <p className="heading-2">{heading2}</p>
                 </div>
@@ -110,7 +133,12 @@ function App() {
       </div>
       <div className="row">
         <h1>Horizontal</h1>
-        <HorizontalTicker duration={duration} easing={easing} delay={delay}>
+        <HorizontalTicker
+          duration={duration}
+          easing={easing}
+          delay={delay}
+          reverse={reverse}
+        >
           {boxes.map(({ id, backgroundColor, heading1, heading2 }) => (
             <div className="box-wrapper box-wrapper--vertical" key={id}>
               <div className="box box--vertical" style={{ backgroundColor }}>
@@ -125,4 +153,10 @@ function App() {
   );
 }
 
-render(<App />, document.getElementById("app"));
+const root = createRoot(document.getElementById("app")!);
+
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
