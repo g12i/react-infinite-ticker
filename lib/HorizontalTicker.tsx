@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { animate } from "./animate";
 import { TickerProps } from "./TickerProps";
-import { useElementWidth } from "./useElementWidth";
+import { useElementSize } from "./useElementSize";
 
 export const HorizontalTicker: React.FC<TickerProps> = ({
   children,
@@ -22,7 +22,7 @@ export const HorizontalTicker: React.FC<TickerProps> = ({
     [duration, easing, delay]
   );
 
-  const trackWidth = useElementWidth(track1);
+  const { width: trackWidth } = useElementSize(track1);
 
   useEffect(() => {
     if (!trackWidth || !track1.current || !track2.current) {
