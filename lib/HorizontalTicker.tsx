@@ -8,6 +8,7 @@ export const HorizontalTicker: React.FC<TickerProps> = ({
   duration,
   easing,
   delay,
+  reverse = false,
 }) => {
   const track1 = useRef<HTMLDivElement>(null);
   const track2 = useRef<HTMLDivElement>(null);
@@ -17,9 +18,10 @@ export const HorizontalTicker: React.FC<TickerProps> = ({
       easing,
       delay,
       iterations: 1,
-      fill: "forwards" as const,
+      fill: "forwards",
+      direction: reverse ? "reverse" : "normal",
     }),
-    [duration, easing, delay]
+    [duration, easing, delay, reverse]
   );
 
   const { width: trackWidth } = useElementSize(track1);

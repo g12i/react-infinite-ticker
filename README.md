@@ -49,3 +49,7 @@ The **number** of milliseconds it should wait before each iterations.
 ### `easing` _(optional)_
 
 The rate of the animation's change over time. Accepts the pre-defined values "linear", "ease", "ease-in", "ease-out", and "ease-in-out", or a custom "cubic-bezier" value like "cubic-bezier(0.42, 0, 0.58, 1)". Defaults to "linear". [(source)](https://developer.mozilla.org/en-US/docs/Web/API/KeyframeEffect/KeyframeEffect#easing)
+
+### `reverse` _(optional)_
+
+The **boolean** indicating whether the animation should run forward or backward. Defaults to `false`
