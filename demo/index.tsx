@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 import { VerticalTicker, HorizontalTicker } from "../lib";
 import "./style.css";
 
@@ -125,4 +125,10 @@ function App() {
   );
 }
 
-render(<App />, document.getElementById("app"));
+const root = createRoot(document.getElementById("app")!);
+
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
