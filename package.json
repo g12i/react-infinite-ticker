@@ -1,6 +1,6 @@
 {
   "name": "react-infinite-ticker",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "React component that scrolls children infinitely",
   "files": [
     "dist",
@@ -54,5 +54,8 @@
     "@types/react": "^16.8 || ^17.0 || ^18.0",
     "react": "^16.8 || ^17.0 || ^18.0",
     "react-dom": "^16.8 || ^17.0 || ^18.0"
+  },
+  "dependencies": {
+    "@react-hook/resize-observer": "^2.0.2"
   }
 }
